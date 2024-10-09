@@ -5,10 +5,6 @@ const mongoose = require('mongoose');
 
 const DATABASE_URL = "mongodb+srv://FranciscoMongos:n.sgRHpL$b-7Le8@ecommerce.ioo61.mongodb.net/ecommerce";
 
-app.get("/users", (req, res) => { 
-    return res.send("Usuarios obtenidos")
-})
-
 
 mongoose.connect(DATABASE_URL,).then(() => {
 
