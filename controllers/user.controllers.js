@@ -1,14 +1,17 @@
 const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
+const jwt = require('jsonwebtoken');
+const SECRET = process.env.SECRET;
 
-async function getUsers (req, res)  {
+
+async function getUsers(req, res) {
     try {
-        
+
         const users = await User.find();
 
         console.log(users);
-        
+
         return res.status(200).send(users);
 
     } catch (error) {
@@ -20,21 +23,21 @@ async function getUsers (req, res)  {
 
 async function createUser(req, res) {
 
-    if(!req.body.password) {
+    if (!req.body.password) {
         return res.status(400).send({
             ok: false,
-            message:"La contraseña es requerida"
+            message: "La contraseña es requerida"
         })
     }
-    
+
     const user = new User(req.body);
 
-    bcrypt.hash(user.password, saltRounds, (error,hash) => {
+    bcrypt.hash(user.password, saltRounds, (error, hash) => {
 
-        if(error){
+        if (error) {
             return res.status(500).send({
-                ok:false,
-                message:"Error al crear usuario"
+                ok: false,
+                message: "Error al crear usuario"
             })
         }
 
@@ -44,10 +47,10 @@ async function createUser(req, res) {
 
             console.log(nuevoUser);
             res.status(201).send(nuevoUser);
-    
+
         }).catch(error => {
             console.log(error);
-            
+
             res.send("el usuario no se pudo crear");
         })
     })
@@ -55,22 +58,28 @@ async function createUser(req, res) {
 
 
 async function getUserById(req, res) {
-    
+
     try {
 
         const { id } = req.params;
-        
-        const user = await User.findById(id)
 
-        if(!user) {
-        return res.status(404).send({
-                                        message:"El usuario no fue encontrado",
-                                        ok: false
-                                    })
-    }
+        if (req.user.role !== "admin" && id !== req.user._id) {
+            return res.status(403).send({
+                message: "No tienes permiso para actualizar este usuario"
+            })
+        }
 
-        console.log(user);
-        
+        const user = await User.findById(id);
+
+        if (!user) {
+            return res.status(404).send({
+                message: "El usuario no fue encontrado",
+                ok: false
+            })
+        }
+
+        user.password = undefined;
+
         return res.status(200).send({
             ok: true,
             message: "El usuario fue encontrado",
@@ -79,7 +88,7 @@ async function getUserById(req, res) {
 
     } catch (error) {
         console.log(error);
-        
+
         return res.status(500).send("Error al obtener usuario en la DB");
     }
 
@@ -88,6 +97,7 @@ async function getUserById(req, res) {
 
 async function deleteUser(req, res) {
     try {
+
         const { id } = req.params
 
         const deletedUser = await User.findByIdAndDelete(id)
@@ -96,11 +106,11 @@ async function deleteUser(req, res) {
             ok: true,
             message: "El usuario fue borrado correctamente!",
             deletedUser
-            
+
         })
     } catch (error) {
         console.log(error);
-        
+
         return res.status(500).send({
             ok: false,
             message: "Error al borrar el usuario"
@@ -114,10 +124,16 @@ async function updateUser(req, res) {
 
         const { id } = req.params
 
+        if (req.user.role !== "admin" && id !== req.user._id) {
+            return res.status(403).send({
+                message: "No tienes permiso para actualizar este usuario"
+            })
+        }
+
         const user = await User.findByIdAndUpdate(id, req.body, { new: true })
 
         console.log(user);
-        
+
         return res.status(200).send({
             ok: true,
             message: "Se actualizo el usuario correctamente",
@@ -126,7 +142,7 @@ async function updateUser(req, res) {
 
     } catch (error) {
         console.log(error);
-        
+
         return res.status(500).send({
             ok: false,
             message: "Error al actualizar el usuario"
@@ -141,41 +157,46 @@ async function login(req, res) {
         const { email, password } = req.body;
         console.log(email, password);
 
-        if(!email || !password) {
+        if (!email || !password) {
             return res.status(400).send({
                 message: "Email y contraseña son requeridos"
             })
         }
-        
+
         const user = await User.findOne({ email })
 
-        if(!user) {
+        if (!user) {
             return res.status(400).send({
-                message:"Alguno de los dato son incorrecto"
+                message: "Alguno de los dato son incorrecto"
             })
         }
 
         const match = await bcrypt.compare(password, user.password)
-        
-        if(!match) {
+
+        if (!match) {
             return res.status(400).send({
-                message:"Alguno de los dato son incorrecto"
+                message: "Alguno de los dato son incorrecto"
             })
         }
 
         user.password = undefined;
         user.__v = undefined;
 
+        const token = jwt.sign(user.toJSON(), SECRET, { expiresIn: '1h' });
+
+        console.log(token);
+
+
         return res.status(200).send({
             ok: true,
             message: "Login exitoso",
-            user
-            
+            user,
+            token
         })
 
     } catch (error) {
         console.log(error);
-        
+
         return res.status(500).send({
             ok: false,
             message: "Error al autenticar usuario"
