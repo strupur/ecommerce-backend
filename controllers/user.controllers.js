@@ -1,6 +1,5 @@
 const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
-const saltRounds = 10;
 const jwt = require('jsonwebtoken');
 const SECRET = process.env.SECRET;
 
@@ -23,36 +22,31 @@ async function getUsers(req, res) {
 
 async function createUser(req, res) {
 
-    if (!req.body.password) {
+    if (!req.body.titulo) {
         return res.status(400).send({
             ok: false,
-            message: "La contraseña es requerida"
+            message: "El Titulo es requerido"
+        })
+    }
+
+    if (!req.body.descripcion) {
+        return res.status(400).send({
+            ok: false,
+            message: "El Descripcion es requerido"
         })
     }
 
     const user = new User(req.body);
 
-    bcrypt.hash(user.password, saltRounds, (error, hash) => {
+    user.save().then((nuevoUser) => {
 
-        if (error) {
-            return res.status(500).send({
-                ok: false,
-                message: "Error al crear usuario"
-            })
-        }
+        console.log(nuevoUser);
+        res.status(201).send(nuevoUser);
 
-        user.password = hash;
+    }).catch(error => {
+        console.log(error);
 
-        user.save().then((nuevoUser) => {
-
-            console.log(nuevoUser);
-            res.status(201).send(nuevoUser);
-
-        }).catch(error => {
-            console.log(error);
-
-            res.send("el usuario no se pudo crear");
-        })
+        res.send("el usuario no se pudo crear");
     })
 }
 
@@ -63,33 +57,18 @@ async function getUserById(req, res) {
 
         const { id } = req.params;
 
-        if (req.user.role !== "admin" && id !== req.user._id) {
-            return res.status(403).send({
-                message: "No tienes permiso para actualizar este usuario"
-            })
-        }
-
         const user = await User.findById(id);
-
-        if (!user) {
-            return res.status(404).send({
-                message: "El usuario no fue encontrado",
-                ok: false
-            })
-        }
-
-        user.password = undefined;
 
         return res.status(200).send({
             ok: true,
-            message: "El usuario fue encontrado",
+            message: "El Titulo fue encontrado",
             user
         })
 
     } catch (error) {
         console.log(error);
 
-        return res.status(500).send("Error al obtener usuario en la DB");
+        return res.status(500).send("Error al obtener Titulo en la DB");
     }
 
 }
@@ -104,7 +83,7 @@ async function deleteUser(req, res) {
 
         return res.status(200).send({
             ok: true,
-            message: "El usuario fue borrado correctamente!",
+            message: "El titulo fue borrado correctamente!",
             deletedUser
 
         })
@@ -113,7 +92,7 @@ async function deleteUser(req, res) {
 
         return res.status(500).send({
             ok: false,
-            message: "Error al borrar el usuario"
+            message: "Error al borrar el titulo"
         });
     }
 }
@@ -124,11 +103,7 @@ async function updateUser(req, res) {
 
         const { id } = req.params
 
-        if (req.user.role !== "admin" && id !== req.user._id) {
-            return res.status(403).send({
-                message: "No tienes permiso para actualizar este usuario"
-            })
-        }
+       
 
         const user = await User.findByIdAndUpdate(id, req.body, { new: true })
 
@@ -136,7 +111,7 @@ async function updateUser(req, res) {
 
         return res.status(200).send({
             ok: true,
-            message: "Se actualizo el usuario correctamente",
+            message: "Se actualizo el titulo correctamente",
             user
         })
 
@@ -145,7 +120,7 @@ async function updateUser(req, res) {
 
         return res.status(500).send({
             ok: false,
-            message: "Error al actualizar el usuario"
+            message: "Error al actualizar el titulo"
         });
     }
 }
