@@ -12,3 +12,7 @@ module.exports = app;
 const gatito = 36;
 
 console.log(gatito + 1);
+
+const gatito1 = 36;
+
+console.log(gatito1 + 1);
