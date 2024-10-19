@@ -8,3 +8,7 @@ app.use( express.json());
 app.use([ userRoutes ])
 
 module.exports = app;
+
+const gatito = 36;
+
+console.log(gatito + 1);
