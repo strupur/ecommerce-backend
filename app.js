@@ -13,6 +13,6 @@ const gatito = 36;
 
 console.log(gatito + 1);
 
-const gatito1 = 36;
+const gatito1 = 35;
 
 console.log(gatito1 + 1);
