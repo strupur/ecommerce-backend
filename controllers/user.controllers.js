@@ -103,7 +103,7 @@ async function updateUser(req, res) {
 
         const { id } = req.params
 
-       
+
 
         const user = await User.findByIdAndUpdate(id, req.body, { new: true })
 
@@ -138,7 +138,9 @@ async function login(req, res) {
             })
         }
 
-        const user = await User.findOne({ email })
+        const user = await User.findOne({ email });
+
+        console.log(user);
 
         if (!user) {
             return res.status(400).send({

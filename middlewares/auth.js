@@ -5,28 +5,31 @@ function validation(req, res, next) {
 
     const token = req.headers.authorization;
 
-    if(!token){
-        return res.status(401).send({
-            message: "No tiene autorizacion para acceder a este endpoint"
-        })
-    }
+    console.log(token);
+    
 
-    jwt.verify(token, SECRET, (error, payload) => {
+    // if(!token){
+    //     return res.status(401).send({
+    //         message: "No tiene autorizacion para acceder a este endpoint"
+    //     })
+    // }
 
-        if(error) {
-            console.log(error);
-            return res.status(401).send({
-                message:"No tiene autorizacion para acceder aqui"
-            })
-        }
+    // jwt.verify(token, SECRET, (error, payload) => {
 
-        console.log(payload);
+    //     if(error) {
+    //         console.log(error);
+    //         return res.status(401).send({
+    //             message:"No tiene autorizacion para acceder aqui"
+    //         })
+    //     }
 
-        req.user = payload;
+    //     console.log(payload);
+
+    //     req.user = payload;
 
         next();
         
-    })
+    // })
 
 }
 
