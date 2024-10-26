@@ -5,7 +5,7 @@ const userControllers = require('../controllers/user.controllers');
 const validation = require('../middlewares/auth');
 const isAdmin = require("../middlewares/isAdmin");
 
-router.get("/users",  userControllers.getUsers)
+router.get("/users", validation, userControllers.getUsers)
 
 router.post("/users", userControllers.createUser)
 
