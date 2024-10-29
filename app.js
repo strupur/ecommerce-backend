@@ -4,12 +4,13 @@ const cors = require('cors');
 
 const userRoutes = require('./routes/user.routes');
 const productRoutes = require('./routes/product.routes');
+const categoryRoutes = require('./routes/category.routes');
 
 app.use( cors())
 
 app.use( express.json());
 
-app.use([ userRoutes, productRoutes ])
+app.use([ userRoutes, productRoutes, categoryRoutes])
 
 module.exports = app;
 

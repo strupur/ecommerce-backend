@@ -3,10 +3,10 @@ const Product = require('../models/product.model')
 
 async function getProducts(req, res) {
     try {
-        // Obtener todos los productos de la base de datos
+        
         const products = await Product.find();
 
-        // Si no se encuentran productos
+        
         if (products.length === 0) {
             return res.status(404).send({
                 ok: false,
@@ -14,7 +14,7 @@ async function getProducts(req, res) {
             });
         }
 
-        // Respuesta exitosa con los productos
+        
         return res.status(200).send({
             ok: true,
             message: "Productos obtenidos exitosamente",
@@ -23,7 +23,7 @@ async function getProducts(req, res) {
 
     } catch (error) {
         console.error(error);
-        // Enviar una respuesta de error en caso de fallo
+        
         return res.status(500).send({
             ok: false,
             message: "Error al obtener los productos",
