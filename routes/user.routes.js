@@ -4,10 +4,11 @@ const router = express.Router();
 const userControllers = require('../controllers/user.controllers');
 const validation = require('../middlewares/auth');
 const isAdmin = require("../middlewares/isAdmin");
+const uploadUser = require('../middlewares/uploadFileUser')
 
 router.get("/users", validation, userControllers.getUsers)
 
-router.post("/users", userControllers.createUser)
+router.post("/users", [uploadUser], userControllers.createUser)
 
 router.get("/users/:id", [validation, isAdmin], userControllers.getUserById)
 

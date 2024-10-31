@@ -76,9 +76,11 @@ async function getProducts(req, res) {
 async function createProduct(req, res) {
     try {
 
-        console.log(req.body);
-
         const product = new Product(req.body);
+
+        if(req.file) {
+            product.image = req.file.filename;
+        }
 
         const newProduct = await product.save();
 
@@ -184,11 +186,6 @@ async function updateProduct(req, res) {
         });
     }
 }
-
-
-
-
-
 
 
 module.exports = {
