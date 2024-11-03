@@ -4,26 +4,37 @@ const Schema = mongoose.Schema;
 // definir esquema de nuestro modelo
 
 const orderSchema = new Schema({
-    name: {
-        type: String,
-        lowercase: true,
-        minlength: 3,
-        trim: true,
-        maxlength: 90
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        require: true,
     },
-    viewValue: {
-        type: String,
-        trim: true,
-        minlength: 2,
-        maxlength: 100,
+    products: [
+        {
+
+            product: {
+                type: Schema.Types.ObjectId,
+                ref: 'Product',
+            },
+            quantity: Number,
+            price: Number,
+        }
+    ],
+    total: Number,
+    createdAt: {
+        type: Date,
+        default: Date.now,
     },
-    description: { 
+    updatedAt: {
+        type: Date,
+        default: Date.now,
+    },
+    status: {
         type: String,
-        trim: true,
-        minlength: 5,
-        maxlength: 70,
-    } 
-    
-});
+        default: 'PREPARACION',
+        
+    },
+
+})
 
 module.exports = mongoose.model("Order", orderSchema);
