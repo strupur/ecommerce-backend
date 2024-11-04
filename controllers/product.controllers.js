@@ -161,7 +161,18 @@ async function deleteProduct(req, res) {
 async function updateProduct(req, res) {
     try {
         const { id } = req.params;  // Obtener el ID de los parámetros de la ruta
-        const updateData = req.body; // Obtener los datos a actualizar desde el cuerpo de la solicitud
+
+        let updateData = req.body; // Obtener los datos a actualizar desde el cuerpo de la solicitud
+
+        if(req.file) updateData.image = req.file.filename;
+     
+
+        /*const updateData = new Product(req.body);
+
+        if(req.file) {
+            updateData.image = req.file.filename;
+        }*/
+        
 
         const updatedProduct = await Product.findByIdAndUpdate(id, updateData, { new: true });
 
