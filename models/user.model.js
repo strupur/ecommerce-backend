@@ -6,9 +6,10 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
     name: {
         type: String,
-
+        unique: true,
         minlength: 3,
-        maxlength: 100
+        maxlength: 100,
+        require: true
     },
     email: {
         type: String,
@@ -16,6 +17,7 @@ const userSchema = new Schema({
         trim: true,
         minlength: 5,
         maxlength: 100,
+        require: true
         // unique: true,
         // index: true,
         // validate: {
@@ -28,32 +30,34 @@ const userSchema = new Schema({
     },
     password: {
         type: String,
-
         trim: true,
         minlength: 5,
-        maxlength: 70
+        maxlength: 70,
+        require: true
 
     },
     repeatpass: {
         type: String,
-
         trim: true,
         minlength: 3,
-        maxlength: 70
+        maxlength: 70,
+        require: true
 
     },
     category: {
         type: String,
         trim: true,
         minlength: 3,
-        maxlength: 70
+        maxlength: 70,
+        require: true
 
     },
     description: {
         type: String,
         trim: true,
         minlength: 3,
-        maxlength: 70
+        maxlength: 70,
+        require: true
 
     },
     bornDate: {
@@ -61,13 +65,8 @@ const userSchema = new Schema({
 
         trim: true,
         minlength: 5,
-        maxlength: 24
-        // validator: (value) => {
-        //     const fecha = new Date(value);
-        //     const hoy = new Date();
-
-        //     return fecha < (hoy - 18años en milesegundo);
-        // }
+        maxlength: 24,
+        require: true
     }, 
     image: {
         type: String,

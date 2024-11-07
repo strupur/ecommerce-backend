@@ -9,12 +9,14 @@ const productSchema = new Schema({
         lowercase: true,
         minlength: 3,
         trim: true,
-        maxlength: 90
+        maxlength: 90,
+        require: true,
     },
     price: {
         type: Number,
         trim: true,
-        minlength: 5,
+        minlength: 3,
+        require: true,
         maxlength: 100,
         
         
@@ -23,18 +25,21 @@ const productSchema = new Schema({
         type: String,
         trim: true,
         minlength: 5,
+        require: true,
         maxlength: 70,
 
      },
     category: { 
         type: String,
-        minlength: 5,
+        minlength: 3,
+        require: true,
         maxlength: 100,
     },
     image: { 
         type: String,
         trim: true,
         minlength: 3,
+        require: true,
         maxlength: 300,
     },
     createdAt: { 
