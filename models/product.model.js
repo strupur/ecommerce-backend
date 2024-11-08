@@ -26,7 +26,7 @@ const productSchema = new Schema({
         trim: true,
         minlength: 5,
         require: true,
-        maxlength: 70,
+        maxlength: 500,
 
      },
     category: { 

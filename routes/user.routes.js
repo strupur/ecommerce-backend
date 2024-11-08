@@ -14,7 +14,7 @@ router.get("/api/users/:id", [validation, isAdmin], userControllers.getUserById)
 
 router.delete("/api/users/:id", [validation, isAdmin], userControllers.deleteUser)
 
-router.put("/api/users/:id", [validation], userControllers.updateUser)
+router.put("/api/users/:id", [validation], [uploadUser], userControllers.updateUser)
 
 router.post("/login", userControllers.login)
 
