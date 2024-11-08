@@ -6,15 +6,15 @@ const validation = require('../middlewares/auth');
 const isAdmin = require("../middlewares/isAdmin");
 const uploadUser = require('../middlewares/uploadFileUser')
 
-router.get("/users", validation, userControllers.getUsers)
+router.get("/api/users", validation, userControllers.getUsers)
 
-router.post("/users", [uploadUser], userControllers.createUser)
+router.post("/api/users", [uploadUser], userControllers.createUser)
 
-router.get("/users/:id", [validation, isAdmin], userControllers.getUserById)
+router.get("/api/users/:id", [validation, isAdmin], userControllers.getUserById)
 
-router.delete("/users/:id", [validation, isAdmin], userControllers.deleteUser)
+router.delete("/api/users/:id", [validation, isAdmin], userControllers.deleteUser)
 
-router.put("/users/:id", [validation], userControllers.updateUser)
+router.put("/api/users/:id", [validation], userControllers.updateUser)
 
 router.post("/login", userControllers.login)
 

@@ -7,7 +7,7 @@ const upload = require('../middlewares/uploadFile');
 router.get("/api/productos",  productControllers.getProducts);
 // despues agregar validation, isAdmin, en post
 router.post("/api/productos", [ upload ], productControllers.createProduct);
-router.get("/products/:id", productControllers.getProductById);
+router.get("/api/productos/:id", productControllers.getProductById);
 router.delete("/api/productos/:id", productControllers.deleteProduct);
 //agregar auth, isAdmin,upload(ya lo tiene)
 router.put("/api/productos/:id", [ upload ], productControllers.updateProduct);
