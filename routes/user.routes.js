@@ -8,7 +8,7 @@ const uploadUser = require('../middlewares/uploadFileUser')
 
 router.get("/api/users", validation, userControllers.getUsers)
 
-router.post("/api/users", [uploadUser], userControllers.createUser)
+router.post("/api/users", [validation, isAdmin], [uploadUser], userControllers.createUser)
 
 router.get("/api/users/:id", [validation, isAdmin], userControllers.getUserById)
 
