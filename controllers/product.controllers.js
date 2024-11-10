@@ -31,47 +31,6 @@ async function getProducts(req, res) {
     }
 }
 
-// async function getProducts(req, res) {
-//     try {
-
-//         const limit = parseInt(req.query.limit) || 3;
-//         const skip = parseInt(req.query.skip) || 0;
-
-//         const filter = [];
-
-//         if (req.query.name) {
-//             filter.push({ name: { $regex: req.query.name, $options: 'i' } });
-//         }
-        
-//         if (req.query.min_price) {
-//             filter.push({ price: { $gte: req.query.min_price } });
-//         }
-        
-
-//         const query = filter.length > 0 ? { $and: filter } : {};
-
-//         const products = await Product.find(query)
-
-//             .select({ description: 0, __v: 0 })
-//             .sort({ name: 1 })
-//             .collation({ locale: 'es' })
-//             .limit(limit)
-//             .skip(limit * skip);
-
-
-//         return res.status(200).send({
-//             message: "Obtener todos los productos",
-//             products
-//         });
-
-//     } catch (error) {
-//         console.log(error);
-//         return res.status(500).send({ message: "Error al obtener el producto" });
-//     }
-
-// }
-
-
 
 async function createProduct(req, res) {
     try {
@@ -101,9 +60,9 @@ async function createProduct(req, res) {
 
 async function getProductById(req, res) {
     try {
-        const { id } = req.params;  // Obtener el ID de los parámetros de la ruta
+        const { id } = req.params;  
 
-        const product = await Product.findById(id);  // Buscar el producto en la base de datos
+        const product = await Product.findById(id);  
 
         if (!product) {
             return res.status(404).send({
@@ -160,20 +119,12 @@ async function deleteProduct(req, res) {
 
 async function updateProduct(req, res) {
     try {
-        const { id } = req.params;  // Obtener el ID de los parámetros de la ruta
+        const { id } = req.params;  
 
-        let updateData = req.body; // Obtener los datos a actualizar desde el cuerpo de la solicitud
+        let updateData = req.body; 
 
         if(req.file) updateData.image = req.file.filename;
      
-
-        /*const updateData = new Product(req.body);
-
-        if(req.file) {
-            updateData.image = req.file.filename;
-        }*/
-        
-
         const updatedProduct = await Product.findByIdAndUpdate(id, updateData, { new: true });
 
         if (!updatedProduct) {
