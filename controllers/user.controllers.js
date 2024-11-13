@@ -32,6 +32,10 @@ async function createUser(req, res) {
 
     const user = new User(req.body);
 
+    if(req.file) {
+        user.image = req.file.filename;
+    }
+
     bcrypt.hash(user.password, saltRounds, (error, hash) => {
 
         if (error) {
@@ -54,6 +58,7 @@ async function createUser(req, res) {
             res.send("el usuario no se pudo crear");
         })
     })
+    
 }
 
 
@@ -132,6 +137,10 @@ async function updateUser(req, res) {
 
         const user = await User.findByIdAndUpdate(id, req.body, { new: true })
 
+        if(req.file) {
+            user.image = req.file.filename;
+        }
+
         console.log(user);
 
         return res.status(200).send({
@@ -171,7 +180,7 @@ async function login(req, res) {
             })
         }
 
-        const match = await bcrypt.compare(password, user.password)
+        const match = await bcrypt.compare(password, user.password);
 
         if (!match) {
             return res.status(400).send({

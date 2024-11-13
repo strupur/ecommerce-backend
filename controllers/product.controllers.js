@@ -35,7 +35,6 @@ async function getProducts(req, res) {
 async function createProduct(req, res) {
     try {
 
-        console.log("Precio" + req.body.price)
         const product = new Product(req.body);
 
         if(req.file) {
