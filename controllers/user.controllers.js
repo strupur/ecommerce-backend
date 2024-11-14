@@ -135,11 +135,12 @@ async function updateUser(req, res) {
             })
         }
 
+        if(req.file) {
+            req.body.image = req.file.filename;
+        }
+
         const user = await User.findByIdAndUpdate(id, req.body, { new: true })
 
-        if(req.file) {
-            user.image = req.file.filename;
-        }
 
         console.log(user);
 
